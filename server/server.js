@@ -20,17 +20,14 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New user connected');
 
-    // create a newMessage event
-
-    socket.emit('newMessage', {
-        from: 'adrian@example.com',
-        text: 'Hey, I want to learn Node.js',
-        createAt: 129   
-    });
-
     // create a createMessage event
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createAt: new Date().getTime()
+        });
     });
     
     socket.on('disconnect', () => {
