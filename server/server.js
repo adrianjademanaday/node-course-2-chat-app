@@ -28,21 +28,27 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
     // create a createMessage event
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log('createMessage', message);
         io.emit('newMessage', generateMessage(message.from, message.text));
+       callback('This is from the server');
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,
         //     text: message.text,
         //     createAt: new Date().getTime()
         // });
     });
+
+    // socket.on('adminMessage', (msg, callback) => {
+    //     console.log('adminMessage', msg);
+    //     io.emit('adminMessage', generateMessage(msg.from, msg.text));
+    //     callback('Greeting message from the ADMIN');
+    // });
     
     socket.on('disconnect', () => {
         console.log('User was disconnected');
     });
 });
-
 
 // We configure our listening port 
 server.listen(port, function () {
